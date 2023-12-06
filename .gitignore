@@ -1,0 +1,29 @@
+/node_modules
+/public/build
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+auth.json
+npm-debug.log
+yarn-error.log
+/.fleet
+
+# IDE Environment
+/.idea
+/.vscode
+.DS_Store
+**/.DS_Store
+
+# Env values
+.env
+.env.backup
+.env.production
+
+# Config
+docker-compose.yml
+vite.config.js
