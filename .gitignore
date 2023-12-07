@@ -27,3 +27,4 @@ yarn-error.log
 # Config
 docker-compose.yml
 vite.config.js
+docker-conf/redis_data/dump.rdb
