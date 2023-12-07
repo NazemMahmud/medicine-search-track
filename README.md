@@ -15,6 +15,8 @@ After pulling from the repository
 1. Run command: `composer install`
 2. _(If needed)_, give storage permission: `chmod -R 777 storage`
 3. Migrate database: `php artisan migrate`
+4. Add JWT secret key: `php artisan jwt:secret`
+5. Update `JWT_TTL` & `JWT_REFRESH_TTL` value in your `.env` file _(if you feel necessary)_
 
 ## Docker Installation
 1. Copy `docker-compose.yml.example` and paste as `docker-compose.yml.`. Change anything such as port number or db configuration if you feel necessary
@@ -27,6 +29,7 @@ After pulling from the repository
 6. **Inside the container:**
     - To install composer packages, run command: `composer install`run command: `composer install`
     - _(If needed)_, give storage permission: `chmod -R 777 storage`
+    - Add JWT secret key: `php artisan jwt:secret`
     - Migrate database: `php artisan migrate`
 
 
