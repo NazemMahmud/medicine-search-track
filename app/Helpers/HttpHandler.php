@@ -8,19 +8,20 @@ final class HttpHandler
 {
     /**
      * API success response
-     *
      * @param mixed $data
      * @param int $statusCode
      * @return JsonResponse
      */
     public static function successResponse(mixed $data, int $statusCode = 200): JsonResponse
     {
-        // todo
+        return response()->json([
+            'data' => $data,
+            'status' => Constants::SUCCESS
+        ], $statusCode);
     }
 
     /**
      * API success message response
-     *
      * @param string $message
      * @param int $statusCode
      * @return JsonResponse
@@ -37,7 +38,6 @@ final class HttpHandler
 
     /**
      * API error message response
-     *
      * @param string $message
      * @param int $statusCode
      * @return JsonResponse

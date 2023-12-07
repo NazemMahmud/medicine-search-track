@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Helpers\RequestValidationErrorFormat;
 
-class RegistrationRequest extends RequestValidationErrorFormat
+class LoginRequest extends RequestValidationErrorFormat
 {
     protected $stopOnFirstFailure = true;
 
@@ -16,9 +16,8 @@ class RegistrationRequest extends RequestValidationErrorFormat
     public function rules()
     {
         return [
-            'name' => 'required|string',
-            'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|min:6'
+            'email' => 'required|email',
+            'password' => 'required|string|min:6',
         ];
     }
 }
