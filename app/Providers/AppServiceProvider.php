@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Laravel\Sanctum\Sanctum;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +14,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // to remove unwanted migrations
+        Sanctum::ignoreMigrations();
+
+        /**
+         * Bind custom service providers
+         */
+        $this->app->register(RepositoryServiceProvider::class);
     }
 
     /**
@@ -23,6 +30,5 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
     }
 }
