@@ -42,3 +42,13 @@ After pulling from the repository
     - **Login User**:
         - Description: Allows users to log in.
         - Payload: **`email`**, **`password`**.
+2. **Public Search Endpoint (Unauthenticated)**
+    - **Description**: Search for drugs using the RxNorm “getDrugs” endpoint (from https://lhncbc.nlm.nih.gov/RxNav/APIs/RxNormAPIs.html).
+    - **Parameters**: **`drug_name`** (string)
+    - **Functionality**:
+        - Use the “getDrugs” endpoint from the National Library of Medicine for tty = “SBD”.
+        - Fetch the “name” of the top 5 results.
+        - Additionally, use *getRxcuiHistoryStatus* API from National Library of Medicine to fetch:
+            - All **`baseName`** under **`ingredientAndStrength`**.
+            - Different **`doseFormGroupName`** from **`doseFormGroupConcept`**.
+        - Return fields: rxcui (ID)**,** Drug name (string), Ingredient base names (array), Dosage form (array). // todo
