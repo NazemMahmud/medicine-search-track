@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 final class HttpHandler
 {
@@ -12,7 +13,7 @@ final class HttpHandler
      * @param int $statusCode
      * @return JsonResponse
      */
-    public static function successResponse(mixed $data, int $statusCode = 200): JsonResponse
+    public static function successResponse(mixed $data, int $statusCode = Response::HTTP_OK): JsonResponse
     {
         return response()->json([
             'data' => $data,
@@ -26,7 +27,7 @@ final class HttpHandler
      * @param int $statusCode
      * @return JsonResponse
      */
-    public static function successMessage(string $message, int $statusCode = 200): JsonResponse
+    public static function successMessage(string $message, int $statusCode = Response::HTTP_OK): JsonResponse
     {
         return response()->json([
             'data' => [
@@ -42,7 +43,7 @@ final class HttpHandler
      * @param int $statusCode
      * @return JsonResponse
      */
-    public static function errorMessage(string $message, int $statusCode = 400): JsonResponse
+    public static function errorMessage(string $message, int $statusCode = Response::HTTP_BAD_REQUEST): JsonResponse
     {
         return response()->json([
             'error' => $message,

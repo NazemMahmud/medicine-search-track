@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Exceptions\ClientApiException;
 use GuzzleHttp\Exception\RequestException;
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 class MedicineService
 {
@@ -24,8 +26,8 @@ class MedicineService
 
             return $response;
         } catch (RequestException $e) {
-            // todo: create a custom exception handler
-            throw new Exception('Error fetching drug information.');
+            Log::error("Error fetching drug information for $drugName");
+            throw new ClientApiException('Error fetching drug information.');
         }
     }
 
@@ -87,8 +89,8 @@ class MedicineService
                     'dose_form_group_names' => $doseFormGroups,
                 ];
             } catch (RequestException $e) {
-                // todo: create a custom exception handler
-                throw new Exception('Error fetching drug details.');
+                Log::error("Error fetching details drug information for $this->drugName");
+                throw new ClientApiException('Error fetching drug details.');
             }
         }
 

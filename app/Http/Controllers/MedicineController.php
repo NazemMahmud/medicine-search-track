@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ClientApiException;
+use App\Exceptions\DatabaseException;
 use App\Helpers\HttpHandler;
 use App\Repositories\Medicine\MedicineRepositoryContract;
 use App\Services\MedicineService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class MedicineController extends Controller
 {
@@ -24,6 +28,10 @@ class MedicineController extends Controller
          * 2.1 All `baseName` under `ingredientAndStrength`
          * 2.2 Different `doseFormGroupName` from `doseFormGroupConcept`
          * 3. returns: [{id: rxcui, drug_name: DrugName, baseNames: [], doseFormGroupName: [] }]
+         * Test: 1st API error
+         * Test: 2nd API error
+         * Test: 3rd DB error
+         * Test: 4th store
          */
         try {
             $drugName = $request->query('drug_name');
@@ -34,10 +42,15 @@ class MedicineController extends Controller
             $drugInfo = $this->medicineService->getDrugs($drugName);
             $drugData = $this->medicineService->extractDrugInfo($drugInfo);
             $details = $this->medicineService->getDrugDetails($drugData);
-// todo: store data
-            return HttpHandler::successResponse($details);
+
+            return HttpHandler::successResponse($this->medicineRepo->saveDrugs($details));
+        } catch (ClientApiException $cex) {
+            return HttpHandler::errorMessage($cex->getMessage(), $cex->getCode());
+        } catch (DatabaseException $dbex) {
+            return HttpHandler::errorMessage($dbex->getMessage(), $dbex->getCode());
         } catch (\Exception $ex) {
-            return HttpHandler::errorMessage($ex->getMessage(),500);
+            Log::error('Controller error: ' . $ex->getMessage());
+            return HttpHandler::errorMessage($ex->getMessage(),Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

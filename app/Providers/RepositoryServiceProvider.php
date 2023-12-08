@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use App\Repositories\Medicine\MedicineRepositoryContract;
-use App\Repositories\Medicine\MedicineRepositoryEloquent;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Auth\AuthRepositoryEloquent;
 use App\Repositories\Auth\AuthRepositoryContract;
+use App\Repositories\Medicine\MedicineRepositoryContract;
+use App\Repositories\Medicine\MedicineRepositoryEloquent;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
