@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use App\Helpers\Constants;
 use App\Helpers\HttpHandler;
+use Illuminate\Http\Response;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
@@ -23,17 +24,11 @@ class JWTMiddleware
             $user = JWTAuth::parseToken()->authenticate();
         } catch (\Exception $e) {
             if ($e instanceof TokenInvalidException){
-                return HttpHandler::errorMessage(Constants::INVALID_TOKEN, 403);
+                return HttpHandler::errorMessage(Constants::INVALID_TOKEN, Response::HTTP_FORBIDDEN);
             } else if ($e instanceof TokenExpiredException) {
-                return response()->json([
-                    'data' => [
-                        'refresh_token' => JWTAuth::refresh(JWTAuth::getToken()),
-                        'message' => 'Token is Expired'
-                    ],
-                    'status' => Constants::FAILED
-                ], 401);
+                return HttpHandler::errorMessage(Constants::EXPIRED_TOKEN, Response::HTTP_FORBIDDEN);
             } else {
-                return HttpHandler::errorMessage(Constants::TOKEN_NOT_FOUND, 404);
+                return HttpHandler::errorMessage(Constants::TOKEN_NOT_FOUND, Response::HTTP_NOT_FOUND);
             }
         }
 

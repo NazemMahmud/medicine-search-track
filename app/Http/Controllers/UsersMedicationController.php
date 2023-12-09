@@ -24,6 +24,10 @@ class UsersMedicationController extends Controller
          * Ensure `rxcui` is valid (using National Library of Medicine API).
          */
         $user = $request->user();
+        if ($user->medications()->where('rxcui',  $request->input('rxcui'))->exists()) {
+            return HttpHandler::successMessage("This medication is already added for this user",  Response::HTTP_OK);
+        }
+
         $med = $this->userMedService->addMedication($user->id, $request->input('rxcui'));
 
         if($med === true) {
@@ -33,26 +37,30 @@ class UsersMedicationController extends Controller
         return HttpHandler::errorMessage("Medicine not found",  Response::HTTP_NOT_FOUND);
     }
 
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         return HttpHandler::successResponse(
             ['medications' => $this->userMedRepo->getMedications($request->user())]
         );
-        /**
-         * - Returns: Rx ID, Drug name, baseNames (ingredientAndStrength), doseFormGroupName (doseFormGroupConcept).
-         */
-
     }
 
-    public function destroy(string $rxcui)
+    public function destroy(string $rxcui): JsonResponse
     {
+        $user = auth()->user();
+
         /**
          * todo
-         * - **Delete Drug**:
-         * - Description: Delete a drug from the user's medication list.
          * - Validation: Ensure `rxcui` is valid and exists in the user’s list.
          */
 
+        $medication = $this->userMedRepo->findMedication($user, $rxcui);
+
+        if (!$medication) {
+            return HttpHandler::errorMessage('Medication not found for this user.', Response::HTTP_NOT_FOUND);
+        }
+
+        $this->userMedRepo->delete($user->id, $medication->id);
+        return HttpHandler::successMessage('Medication removed successfully.');
     }
 
 }

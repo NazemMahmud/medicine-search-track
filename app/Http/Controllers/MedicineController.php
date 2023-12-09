@@ -30,7 +30,7 @@ class MedicineController extends Controller
          * 3. returns: [{id: rxcui, drug_name: DrugName, baseNames: [], doseFormGroupName: [] }]
          */
         try {
-            $drugName = $request->query('drug_name');
+            $drugName = strtolower($request->query('drug_name'));
             if (empty($drugName)) {
                 return HttpHandler::errorMessage('Drug name is required.', 422);
             }

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreign('medication_id')->references('id')->on('medicines')->onDelete('cascade');
             $table->unique(['user_id', 'medication_id']);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

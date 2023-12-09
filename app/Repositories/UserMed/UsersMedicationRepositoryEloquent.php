@@ -6,12 +6,20 @@ namespace App\Repositories\UserMed;
 use App\Models\Medicines;
 use App\Models\User;
 use App\Models\UsersMedication;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 class UsersMedicationRepositoryEloquent implements UsersMedicationRepositoryContract
 {
-    public function findMedicineByRxcui(string $rxcui): Medicines
+    public function __construct(protected UsersMedication $model)
+    {}
+    public function findMedicineByRxcui(string $rxcui): Medicines|null
     {
         return Medicines::where('rxcui', $rxcui)->first();
+    }
+
+    public function findMedication(Authenticatable $user, string $rxcui): object|null
+    {
+        return $user->medications()->where('rxcui', $rxcui)->first();
     }
 
     public function addMedication(int $userId, int $medicineId): UsersMedication
@@ -24,9 +32,12 @@ class UsersMedicationRepositoryEloquent implements UsersMedicationRepositoryCont
         return $res;
     }
 
+    // todo: later check if a user have no medication
     public function getMedications(User $user): object
     {
-        return $user->medications->map(function ($medication) {
+        $medications = $user->medications()->whereNull('deleted_at')->get();
+
+        return $medications->map(function ($medication) {
             return [
                 'rxcui' => $medication->rxcui,
                 'name' => $medication->name,
@@ -34,5 +45,14 @@ class UsersMedicationRepositoryEloquent implements UsersMedicationRepositoryCont
                 'dose_form_group_names' =>  json_decode($medication->dose_form_group_names)
             ];
         });
+    }
+
+    public function delete(int $userId, int $medicineId): void
+    {
+        $medication = $this->model::where('user_id', $userId)
+            ->where('medication_id', $medicineId)
+            ->first();
+
+        $medication->delete();
     }
 }
