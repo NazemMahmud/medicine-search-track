@@ -4,6 +4,7 @@ The service is integrated with the National Library of Medicine's RxNorm APIs fo
 
 # Table of Contents
 - [Installation](#installation)
+- [Endpoints](#endpoints)
 
 
 # Installation:
@@ -49,6 +50,22 @@ After pulling from the repository
         - Use the “getDrugs” endpoint from the National Library of Medicine for tty = “SBD”.
         - Fetch the “name” of the top 5 results.
         - Additionally, use *getRxcuiHistoryStatus* API from National Library of Medicine to fetch:
-            - All **`baseName`** under **`ingredientAndStrength`**.
-            - Different **`doseFormGroupName`** from **`doseFormGroupConcept`**.
-        - Return fields: rxcui (ID)**,** Drug name (string), Ingredient base names (array), Dosage form (array). // todo
+            - All `baseName` under `ingredientAndStrength`.
+            - Different `doseFormGroupName` from `doseFormGroupConcept`.
+        - Return fields: **rxcui (ID)**, **Drug name** (string), **Ingredient base names** (array), **Dosage form** (array).
+3. **Private User Medication Endpoints** (Ensure that all endpoints below are authenticated)
+    - **Endpoints**:
+        - **Add Drug**:
+            - Description: Add a new drug to the user's medication list.
+            - Payload: `rxcui` (string)
+            - Validation: Ensure `rxcui` is valid (using National Library of Medicine API).
+        - **Delete Drug**:
+            - Description: Delete a drug from the user's medication list.
+            - Validation: Ensure `rxcui` is valid and exists in the user’s list.
+        - **Get User Drugs**:
+            - Description: Retrieve all drugs from the user's medication list.
+            - Returns: Rx ID, Drug name, baseNames (ingredientAndStrength), doseFormGroupName (doseFormGroupConcept).
+
+
+# Todo
+- Unit tests
