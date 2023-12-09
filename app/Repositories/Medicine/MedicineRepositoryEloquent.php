@@ -24,7 +24,7 @@ class MedicineRepositoryEloquent implements MedicineRepositoryContract {
         $insertedData = [];
         foreach ($data as $item) {
             try {
-                $insert = $this->model::create([
+                $this->model::create([
                     'rxcui' => $item['rxcui'],
                     'name' => $item['name'],
                     'drug_name' => $item['drug_name'],
@@ -32,9 +32,9 @@ class MedicineRepositoryEloquent implements MedicineRepositoryContract {
                     'dose_form_group_names' => json_encode($item['dose_form_group_names']),
                 ]);
 
-                unset($insert['drug_name']);
+                unset($item['drug_name']);
 
-                $insertedData[] = $insert;
+                $insertedData[] = $item;
             } catch (Exception $ex) {
                 Log::error("Failed to save entry for rxcui: {$item['rxcui']}. Error: {$ex->getMessage()}");
                 throw new DatabaseException('Error saving data to the database.');

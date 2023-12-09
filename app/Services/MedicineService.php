@@ -89,7 +89,7 @@ class MedicineService
                     'dose_form_group_names' => $doseFormGroups,
                 ];
             } catch (RequestException $e) {
-                Log::error("Error fetching details drug information for $this->drugName");
+                Log::error("Error fetching details drug information for $this->drugName, rxcui ID: $rxcui");
                 throw new ClientApiException('Error fetching drug details.');
             }
         }

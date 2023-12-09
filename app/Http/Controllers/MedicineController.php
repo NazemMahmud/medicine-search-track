@@ -21,17 +21,13 @@ class MedicineController extends Controller
     public function searchMedicine(Request $request): JsonResponse
     {
         /**
-         * todo:
+         * todo: remove after unit test
          * 1. Call this endpoint: https://rxnav.nlm.nih.gov/REST/drugs.json?name=actos, for tty = “SBD”.
          * 1.1 from responseFetch the “name” of the top 5 results
          * 2. use getRxcuiHistoryStatus API from National Library of Medicine to fetch:
          * 2.1 All `baseName` under `ingredientAndStrength`
          * 2.2 Different `doseFormGroupName` from `doseFormGroupConcept`
          * 3. returns: [{id: rxcui, drug_name: DrugName, baseNames: [], doseFormGroupName: [] }]
-         * Test: 1st API error
-         * Test: 2nd API error
-         * Test: 3rd DB error
-         * Test: 4th store
          */
         try {
             $drugName = $request->query('drug_name');
