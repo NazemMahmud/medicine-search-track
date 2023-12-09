@@ -7,6 +7,7 @@ use App\Http\Requests\AddMedicationRequest;
 use App\Repositories\UserMed\UsersMedicationRepositoryContract;
 use App\Services\UsersMedicationService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class UsersMedicationController extends Controller
@@ -32,12 +33,12 @@ class UsersMedicationController extends Controller
         return HttpHandler::errorMessage("Medicine not found",  Response::HTTP_NOT_FOUND);
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        return HttpHandler::successResponse(
+            ['medications' => $this->userMedRepo->getMedications($request->user())]
+        );
         /**
-         * todo
-         * - **Get User Drugs**:
-         * - Description: Retrieve all drugs from the user's medication list.
          * - Returns: Rx ID, Drug name, baseNames (ingredientAndStrength), doseFormGroupName (doseFormGroupConcept).
          */
 

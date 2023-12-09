@@ -24,6 +24,6 @@ class Medicines extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'users_medications');
+        return $this->belongsToMany(User::class, 'users_medications', 'medication_id', 'user_id', );
     }
 }

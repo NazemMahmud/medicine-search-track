@@ -52,14 +52,14 @@ After pulling from the repository
         - Additionally, use *getRxcuiHistoryStatus* API from National Library of Medicine to fetch:
             - All `baseName` under `ingredientAndStrength`.
             - Different `doseFormGroupName` from `doseFormGroupConcept`.
-        - Return fields: **rxcui (ID)**, **Drug name** (string), **Ingredient base names** (array), **Dosage form** (array). // todo
+        - Return fields: **rxcui (ID)**, **Drug name** (string), **Ingredient base names** (array), **Dosage form** (array).
 3. **Private User Medication Endpoints** (Ensure that all endpoints below are authenticated)
     - **Endpoints**:
         - **Add Drug**:
             - Description: Add a new drug to the user's medication list.
             - Payload: `rxcui` (string)
             - Validation: Ensure `rxcui` is valid (using National Library of Medicine API).
-        - **Delete Drug**:
+        - **Delete Drug**: // todo
             - Description: Delete a drug from the user's medication list.
             - Validation: Ensure `rxcui` is valid and exists in the user’s list.
         - **Get User Drugs**:
@@ -68,6 +68,5 @@ After pulling from the repository
 
 
 # Todo
-- create users_medication table and model, and relationship
 - complete 3 APIs
 - verify condition in those 3 apis fro rxcui

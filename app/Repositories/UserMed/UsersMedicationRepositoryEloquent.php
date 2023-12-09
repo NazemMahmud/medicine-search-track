@@ -4,6 +4,7 @@ namespace App\Repositories\UserMed;
 
 
 use App\Models\Medicines;
+use App\Models\User;
 use App\Models\UsersMedication;
 
 class UsersMedicationRepositoryEloquent implements UsersMedicationRepositoryContract
@@ -21,5 +22,17 @@ class UsersMedicationRepositoryEloquent implements UsersMedicationRepositoryCont
         ]);
 
         return $res;
+    }
+
+    public function getMedications(User $user): object
+    {
+        return $user->medications->map(function ($medication) {
+            return [
+                'rxcui' => $medication->rxcui,
+                'name' => $medication->name,
+                'base_names' => json_decode($medication->base_names),
+                'dose_form_group_names' =>  json_decode($medication->dose_form_group_names)
+            ];
+        });
     }
 }
