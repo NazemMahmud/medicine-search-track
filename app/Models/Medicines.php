@@ -21,4 +21,9 @@ class Medicines extends Model
         'base_names',
         'dose_form_group_names',
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'users_medications');
+    }
 }
