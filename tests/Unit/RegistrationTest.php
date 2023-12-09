@@ -45,7 +45,7 @@ class RegistrationTest extends TestCase
 
         $this->passwordNotValidatedData = [
             'name' => 'Unit Test User 1',
-            'email' => 'unittest1@gmail.com',
+            'email' => 'unittest2@gmail.com',
             'password' => '123'
         ];
 
