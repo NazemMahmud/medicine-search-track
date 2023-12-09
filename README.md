@@ -59,7 +59,7 @@ After pulling from the repository
             - Description: Add a new drug to the user's medication list.
             - Payload: `rxcui` (string)
             - Validation: Ensure `rxcui` is valid (using National Library of Medicine API).
-        - **Delete Drug**: // todo
+        - **Delete Drug**:
             - Description: Delete a drug from the user's medication list.
             - Validation: Ensure `rxcui` is valid and exists in the user’s list.
         - **Get User Drugs**:
@@ -68,5 +68,4 @@ After pulling from the repository
 
 
 # Todo
-- complete 3 APIs
-- verify condition in those 3 apis fro rxcui
+- Unit tests

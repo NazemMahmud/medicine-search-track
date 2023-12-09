@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Log;
 class MedicineService
 {
     protected string $drugName = '';
+    protected string $getDrugsURL = 'https://rxnav.nlm.nih.gov/REST/drugs.json?name=%s';
+    protected string $getDrugDetailsURL = "https://rxnav.nlm.nih.gov/REST/rxcui/%s/historystatus.json";
 
     /**
      * Fetch drugs information for rxcui and name list
@@ -22,7 +24,7 @@ class MedicineService
         try {
             $this->drugName = $drugName;
             $client = new HttpService();
-            $response = $client->get("https://rxnav.nlm.nih.gov/REST/drugs.json?name=$drugName");
+            $response = $client->get(sprintf($this->getDrugsURL, $drugName));
 
             return $response;
         } catch (RequestException $e) {
@@ -76,7 +78,7 @@ class MedicineService
         foreach ($drugData as $drug) {
             try {
                 $rxcui = $drug['rxcui'];
-                $details = $client->get("https://rxnav.nlm.nih.gov/REST/rxcui/$rxcui/historystatus.json");
+                $details = $client->get(sprintf($this->getDrugDetailsURL, $rxcui));
 
                 $baseNames = $this->extractBaseNames($details);
                 $doseFormGroups = $this->extractDoseFormGroups($details);
@@ -125,5 +127,25 @@ class MedicineService
             }
         }
         return $doseFormGroups;
+    }
+
+    /**
+     * check this is a valid drug in the National Library database
+     * @param string $rxcui
+     * @return bool
+     */
+    public function isDrugExist(string $rxcui): bool
+    {
+        $client = new HttpService();
+        $medicines = $client->get(sprintf($this->getDrugDetailsURL, $rxcui));
+
+        if (isset($medicines['rxcuiStatusHistory']['attributes'])
+            && $medicines['rxcuiStatusHistory']['attributes']['rxcui'] === $rxcui
+            && strlen($medicines['rxcuiStatusHistory']['attributes']['name'] )
+        ) {
+            return true;
+        }
+
+        return false;
     }
 }

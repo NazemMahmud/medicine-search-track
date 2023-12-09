@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\HttpHandler;
 use App\Http\Requests\AddMedicationRequest;
 use App\Repositories\UserMed\UsersMedicationRepositoryContract;
+use App\Services\MedicineService;
 use App\Services\UsersMedicationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,18 +15,19 @@ class UsersMedicationController extends Controller
 {
     public function __construct(
         protected UsersMedicationRepositoryContract $userMedRepo,
-        protected UsersMedicationService $userMedService
+        protected UsersMedicationService $userMedService,
+        protected MedicineService $medicineService
     ) {}
 
     public function store(AddMedicationRequest $request): JsonResponse
     {
-        /**
-         * todo
-         * Ensure `rxcui` is valid (using National Library of Medicine API).
-         */
         $user = $request->user();
         if ($user->medications()->where('rxcui',  $request->input('rxcui'))->exists()) {
             return HttpHandler::successMessage("This medication is already added for this user",  Response::HTTP_OK);
+        }
+
+        if($this->medicineService->isDrugExist($request->input('rxcui')) === false) {
+            return HttpHandler::errorMessage("This is not a valid medicine",  Response::HTTP_NOT_FOUND);
         }
 
         $med = $this->userMedService->addMedication($user->id, $request->input('rxcui'));
@@ -48,10 +50,9 @@ class UsersMedicationController extends Controller
     {
         $user = auth()->user();
 
-        /**
-         * todo
-         * - Validation: Ensure `rxcui` is valid and exists in the user’s list.
-         */
+        if($this->medicineService->isDrugExist($rxcui) === false) {
+            return HttpHandler::errorMessage("This is not a valid medicine",  Response::HTTP_NOT_FOUND);
+        }
 
         $medication = $this->userMedRepo->findMedication($user, $rxcui);
 
