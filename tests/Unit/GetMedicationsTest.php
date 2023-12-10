@@ -2,10 +2,14 @@
 
 namespace Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
+use Illuminate\Support\Facades\Redis;
+use Tests\TestCase;
+use App\Helpers\Constants;
 
 class GetMedicationsTest extends TestCase
 {
+//get user meds: 2 - token, get all
+
     /** API URL for store a new IP address */
     private string $baseUrl;
 
@@ -20,16 +24,42 @@ class GetMedicationsTest extends TestCase
     {
         parent::setUp();
 
-        $this->token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNjU5NDMxODYzLCJleHAiOjE2NTk0MzU0NjMsIm5iZiI6MTY1OTQzMTg2MywianRpIjoiUXVsODJ0YTgxUTdQV1dtNiIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwicGF5bG9hZCI6eyJpZCI6MSwibmFtZSI6IlVuaXQgVGVzdCBVc2VyIDEifX0.sNV-eKSVwN4L5ZUFF_InnD4b6a3M6UUkM603_vPKg-A';
+        $this->token = Redis::get('test_access_token');
 
-        $this->baseUrl = env('APP_URL') . '/api/';
+        $this->baseUrl = env('APP_URL') . '/api/user/medicines';
+    }
 
-        $this->invalidData = [
-            'label' => ''
-        ];
+    /**
+     * Test 1: Unauthenticated user/ Token invalid
+     */
+    public function test_invalid_token()
+    {
+        $response = $this->getJson($this->baseUrl);
+        $response->assertStatus(404)
+            ->assertJsonStructure(['error', 'status'])
+            ->assertJsonPath('status', Constants::FAILED)
+            ->assertJsonPath('error', Constants::TOKEN_NOT_FOUND);
+    }
 
-        $this->successRequestData = [
-            'label' => 'test.site.1'
-        ];
+
+
+    /**
+     * Test 2: successfully get medication list
+     */
+    public function test_success_get_medication()
+    {
+        $response = $this->withHeaders(['Authorization' => 'Bearer ' . $this->token])
+            ->getJson($this->baseUrl);
+
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'data' => [
+                    'medications' => [
+                        '*' => [ 'rxcui','name', 'base_names', 'dose_form_group_names']
+                    ]
+                ],
+                'status'
+            ])
+            ->assertJsonPath('status', Constants::SUCCESS);
     }
 }

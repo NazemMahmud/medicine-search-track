@@ -81,9 +81,8 @@ After pulling from the repository
 - The above 2 commands will separate your testing DB from main DB
 - Run each test file one by one in this sequel**, (_because we need `ACCESS_TOKEN` for some test file_):
 - Run tests file in this sequel:
-  - MedicineSearchTest, RegistrationTest, LoginTest, AddMedicationTest
+  - MedicineSearchTest, RegistrationTest, LoginTest, AddMedicationTest, GetMedicationsTest
 - To run a single test file, run with filepath, like, : `php artisan test tests/Unit/RegistrationTest.php`
 
 
-- get user meds: 2 - no med found, get all
 - delete user med - invalid med from library, no medication, success delete - 3

@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use App\Helpers\Constants;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 use Tests\TestCase;
 
