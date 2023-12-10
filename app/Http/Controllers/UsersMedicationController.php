@@ -23,7 +23,7 @@ class UsersMedicationController extends Controller
     {
         $user = $request->user();
         if ($user->medications()->where('rxcui',  $request->input('rxcui'))->exists()) {
-            return HttpHandler::successMessage("This medication is already added for this user",  Response::HTTP_OK);
+            return HttpHandler::successMessage("This medication is already added for this user");
         }
 
         if($this->medicineService->isDrugExist($request->input('rxcui')) === false) {

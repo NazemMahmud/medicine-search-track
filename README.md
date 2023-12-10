@@ -4,13 +4,19 @@ The service is integrated with the National Library of Medicine's RxNorm APIs fo
 
 # Table of Contents
 - [Installation](#installation)
+  - [Common Task](#common-task)
+  - [Normal Installation](#normal-installation)
+  - [Docker Installation](#docker-installation)
 - [Endpoints](#endpoints)
+- [Unit tests](#unit-tests)
 
 
 # Installation:
 
+## Common Task
 After pulling from the repository
 - Copy `.env.example` and paste as `.env`. Change anything such as port number or db configuration if you feel necessary
+- Redis and Database has 2 types of values for local and docker configuration, set according to your setup.
 
 ## Normal Installation
 1. Run command: `composer install`
@@ -67,5 +73,12 @@ After pulling from the repository
             - Returns: Rx ID, Drug name, baseNames (ingredientAndStrength), doseFormGroupName (doseFormGroupConcept).
 
 
-# Todo
-- Unit tests
+# Unit tests: 
+
+- Run command: `php artisan config:cache --env=testing` (_either in docker container or in your local based on your setup_)
+- then run: `php artisan migrate --env=testing`
+- The above 2 commands will separate your testing DB from main DB
+- Run each test file one by one in this sequel**, (_because we need `ACCESS_TOKEN` for some test file_):
+- Run tests file in this sequel:
+  - MedicineSearchTest, RegistrationTest, LoginTest, AddMedicationTest, GetMedicationsTest, DeleteMedicationTest
+- To run a single test file, run with filepath, like, : `php artisan test tests/Unit/RegistrationTest.php`
