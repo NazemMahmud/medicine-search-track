@@ -82,3 +82,17 @@ After pulling from the repository
 - Run tests file in this sequel:
   - MedicineSearchTest, RegistrationTest, LoginTest, AddMedicationTest, GetMedicationsTest, DeleteMedicationTest
 - To run a single test file, run with filepath, like, : `php artisan test tests/Unit/RegistrationTest.php`
+
+
+# Rate Limit
+
+- Rate limiter is applied for all routes except registration in `routes/api.php`
+  - Right now, it is 60 attempts per minute
+  - The values are taken from env value, you can update as you need
+- A custom exception handler (`ThrottleExceptionHandler`) is used to handle the error response
+- Also, **Logged the route path** with error message in the storage file to identify the specific route
+
+
+# Error Log
+- Error logs are generated in daily log file inside `storage/log`, so that it can be separated for each day 
+- The file names are like this, `laravel-2023-12-10.log`
