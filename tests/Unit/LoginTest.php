@@ -110,5 +110,7 @@ class LoginTest extends TestCase
                 'data' => ['access_token', 'expires_in'],
                 'status'
             ])->assertJsonPath('status', Constants::SUCCESS);
+
+        putenv("ACCESS_TOKEN={$response->json('data.access_token')}");
     }
 }

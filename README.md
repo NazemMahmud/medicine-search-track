@@ -67,5 +67,15 @@ After pulling from the repository
             - Returns: Rx ID, Drug name, baseNames (ingredientAndStrength), doseFormGroupName (doseFormGroupConcept).
 
 
-# Todo
-- Unit tests
+# Unit tests: 10 left
+- Run command: `php artisan config:cache --env=testing` (_either in docker container or in your local based on your setup_)
+- then run: `php artisan migrate --env=testing`
+- The above 2 commands will separate your testing DB from main DB
+- To run all tests file, then run: `php artisan test`
+- To run a single test file, then run with filepath, like, : `php artisan test tests/Unit/RegistrationTest.php`
+
+**But, it is better to run each test file one by one in this sequel**, (_because we need `ACCESS_TOKEN` for some test file_):
+  - MedicineSearchTest, RegistrationTest, LoginTest
+- add user med - unauth, validation: missing, type mismatch, add, already added, invalid med from library - 5
+- get user meds: 2 - no med found, get all
+- delete user med - invalid med from library, no medication, success delete - 3
