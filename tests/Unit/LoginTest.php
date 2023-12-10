@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use Illuminate\Support\Facades\Redis;
 use Tests\TestCase;
 use App\Helpers\Constants;
 
@@ -111,6 +112,6 @@ class LoginTest extends TestCase
                 'status'
             ])->assertJsonPath('status', Constants::SUCCESS);
 
-        putenv("ACCESS_TOKEN={$response->json('data.access_token')}");
+        Redis::set('test_access_token', $response->json('data.access_token'));
     }
 }
