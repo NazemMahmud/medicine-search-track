@@ -75,14 +75,10 @@ After pulling from the repository
 
 # Unit tests: 
 
-5 left
 - Run command: `php artisan config:cache --env=testing` (_either in docker container or in your local based on your setup_)
 - then run: `php artisan migrate --env=testing`
 - The above 2 commands will separate your testing DB from main DB
 - Run each test file one by one in this sequel**, (_because we need `ACCESS_TOKEN` for some test file_):
 - Run tests file in this sequel:
-  - MedicineSearchTest, RegistrationTest, LoginTest, AddMedicationTest, GetMedicationsTest
+  - MedicineSearchTest, RegistrationTest, LoginTest, AddMedicationTest, GetMedicationsTest, DeleteMedicationTest
 - To run a single test file, run with filepath, like, : `php artisan test tests/Unit/RegistrationTest.php`
-
-
-- delete user med - invalid med from library, no medication, success delete - 3

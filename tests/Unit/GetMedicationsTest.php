@@ -8,8 +8,6 @@ use App\Helpers\Constants;
 
 class GetMedicationsTest extends TestCase
 {
-//get user meds: 2 - token, get all
-
     /** API URL for store a new IP address */
     private string $baseUrl;
 
@@ -40,7 +38,6 @@ class GetMedicationsTest extends TestCase
             ->assertJsonPath('status', Constants::FAILED)
             ->assertJsonPath('error', Constants::TOKEN_NOT_FOUND);
     }
-
 
 
     /**
