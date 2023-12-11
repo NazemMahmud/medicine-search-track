@@ -32,7 +32,7 @@ class UsersMedicationRepositoryEloquent implements UsersMedicationRepositoryCont
         return $res;
     }
 
-    // todo: later check if a user have no medication
+
     public function getMedications(User $user): object
     {
         $medications = $user->medications()->whereNull('deleted_at')->get();

@@ -9,6 +9,7 @@ The service is integrated with the National Library of Medicine's RxNorm APIs fo
   - [Docker Installation](#docker-installation)
 - [Endpoints](#endpoints)
 - [Unit tests](#unit-tests)
+- [Cache](#cache)
 
 
 # Installation:
@@ -65,6 +66,7 @@ After pulling from the repository
             - Description: Add a new drug to the user's medication list.
             - Payload: `rxcui` (string)
             - Validation: Ensure `rxcui` is valid (using National Library of Medicine API).
+            - **Note:** Here, it is assumed that the drug is already searched and added in our DB. 
         - **Delete Drug**:
             - Description: Delete a drug from the user's medication list.
             - Validation: Ensure `rxcui` is valid and exists in the user’s list.
@@ -92,6 +94,11 @@ After pulling from the repository
 - A custom exception handler (`ThrottleExceptionHandler`) is used to handle the error response
 - Also, **Logged the route path** with error message in the storage file to identify the specific route
 
+# Cache
+
+- Redis cache is applied:
+  - **In medicine search and store route:** when a medicine is successfully added in DB, the `drug_name` will be stored in redis. So that later, wont have to search for the same drug
+  - **In Login unit test:** to store the access token, in order to use that token by other unit test class where the authentication token is needed.
 
 # Error Log
 - Error logs are generated in daily log file inside `storage/log`, so that it can be separated for each day 

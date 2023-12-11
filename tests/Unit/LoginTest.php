@@ -101,6 +101,8 @@ class LoginTest extends TestCase
 
     /**
      * Test 4: successfully register a new user
+     * Set access token in cache here for other auth test route can use
+     * Expire the cache after 1 hour
      * @return void
      */
     public function test_success_login(): void
@@ -113,5 +115,6 @@ class LoginTest extends TestCase
             ])->assertJsonPath('status', Constants::SUCCESS);
 
         Redis::set('test_access_token', $response->json('data.access_token'));
+        Redis::expire('test_access_token', 3600);
     }
 }
