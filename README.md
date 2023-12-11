@@ -9,6 +9,7 @@ The service is integrated with the National Library of Medicine's RxNorm APIs fo
   - [Docker Installation](#docker-installation)
 - [Endpoints](#endpoints)
 - [Unit tests](#unit-tests)
+- [Rate Limit](#rate-limit)
 - [Cache](#cache)
 
 
@@ -39,7 +40,6 @@ After pulling from the repository
     - _(If needed)_, give storage permission: `chmod -R 777 storage`
     - Add JWT secret key: `php artisan jwt:secret`
     - Migrate database: `php artisan migrate`
-
 
 
 # Endpoints
