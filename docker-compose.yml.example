@@ -2,28 +2,33 @@ version: "3"
 services:
   nginx:
     image: nginx:1.20
-    container_name: DRUG_TRACK_Nginx
+    container_name: MEDICINE_TRACK_Nginx
     restart: unless-stopped
     tty: true
     ports:
       - ${APP_PORT}:80
       - "443:443"
     volumes:
-      - ./:/app
+      - ./:/var/www/project
       - ./docker-conf/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-    links:
+    depends_on:
       - php
+      - db-sql
+      - phpmyadmin
+      - redis
+    networks:
+      - medicine_track_docker
 
   php:
-    container_name: DRUG_TRACK_PHP
+    container_name: MEDICINE_TRACK_PHP
     build:
       context: ./docker-conf/php
+    ports:
+      - "9002:9000"
     volumes:
-      - ./:/app
+      - ./:/var/www/project
       - ./docker-conf/php/www.conf:/usr/local/etc/php-fpm.d/www.conf:rw
       - ./docker-conf/php/php.ini:/usr/local/etc/php/php.ini:rw
-    env_file:
-      - "./.env"
     # needed in linux to solve storage log permission denied problem
     # user: "1000:1000"
     logging:
@@ -33,25 +38,60 @@ services:
         max-file: "3"
     extra_hosts:
       - "host.docker.internal:172.17.0.1"
-    working_dir: /app
+    depends_on:
+      - db-sql
+      - redis
+    networks:
+      - medicine_track_docker
 
-  db: # for mysql; must use the service name in env as DB_HOST
+  db-sql: # for mysql; must use the service name in env as DB_HOST
     image: mysql:latest
-    container_name: IP_MANAGE_MYSQL // later
+    container_name: MEDICINE_TRACK_MYSQL
     restart: unless-stopped
     tty: true
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD} # it must be provided
       MYSQL_DATABASE: ${DB_DATABASE}
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
     ports:
-      - 3306:${DB_PORT}
+      - "4036:${DB_PORT}"
     volumes:
       - dbdata:/var/lib/mysql/
       - ./docker-conf/mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - medicine_track_docker
 
-#Volumes
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: MEDICINE_TRACK_MYADMIN
+    restart: always
+    environment:
+      PMA_HOST: db-sql
+      PMA_USER: ${DB_USERNAME}
+      PMA_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "8189:80"
+    networks:
+      - medicine_track_docker
+
+  redis:
+    image: 'redis:alpine'
+    container_name: MEDICINE_TRACK_REDIS
+    ports:
+      - '${REDIS_PORT:-6379}:6379'
+    volumes:
+      - ${REDIS_PATH}:/data
+    networks:
+      - medicine_track_docker
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      retries: 3
+      timeout: 5s
+
+
+networks:
+  medicine_track_docker:
+    driver: "bridge"
+
 volumes:
   dbdata:
     driver: local
