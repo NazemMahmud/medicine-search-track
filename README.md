@@ -9,6 +9,8 @@ The service is integrated with the National Library of Medicine's RxNorm APIs fo
   - [Docker Installation](#docker-installation)
 - [Endpoints](#endpoints)
 - [Unit tests](#unit-tests)
+- [Rate Limit](#rate-limit)
+- [Cache](#cache)
 
 
 # Installation:
@@ -43,7 +45,6 @@ After pulling from the repository
     - Migrate database: `php artisan migrate`
 
 
-
 # Endpoints
 1. **User Authentication Endpoints**
     - **Register User**:
@@ -68,6 +69,7 @@ After pulling from the repository
             - Description: Add a new drug to the user's medication list.
             - Payload: `rxcui` (string)
             - Validation: Ensure `rxcui` is valid (using National Library of Medicine API).
+            - **Note:** Here, it is assumed that the drug is already searched and added in our DB. 
         - **Delete Drug**:
             - Description: Delete a drug from the user's medication list.
             - Validation: Ensure `rxcui` is valid and exists in the user’s list.
@@ -85,3 +87,22 @@ After pulling from the repository
 - Run tests file in this sequel:
   - MedicineSearchTest, RegistrationTest, LoginTest, AddMedicationTest, GetMedicationsTest, DeleteMedicationTest
 - To run a single test file, run with filepath, like, : `php artisan test tests/Unit/RegistrationTest.php`
+
+
+# Rate Limit
+
+- Rate limiter is applied for all routes except registration in `routes/api.php`
+  - Right now, it is 60 attempts per minute
+  - The values are taken from env value, you can update as you need
+- A custom exception handler (`ThrottleExceptionHandler`) is used to handle the error response
+- Also, **Logged the route path** with error message in the storage file to identify the specific route
+
+# Cache
+
+- Redis cache is applied:
+  - **In medicine search and store route:** when a medicine is successfully added in DB, the `drug_name` will be stored in redis. So that later, wont have to search for the same drug
+  - **In Login unit test:** to store the access token, in order to use that token by other unit test class where the authentication token is needed.
+
+# Error Log
+- Error logs are generated in daily log file inside `storage/log`, so that it can be separated for each day 
+- The file names are like this, `laravel-2023-12-10.log`
