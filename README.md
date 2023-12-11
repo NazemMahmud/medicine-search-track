@@ -11,6 +11,8 @@ The service is integrated with the National Library of Medicine's RxNorm APIs fo
 - [Unit tests](#unit-tests)
 - [Rate Limit](#rate-limit)
 - [Cache](#cache)
+- [Postman Collection](#postman-collection)
+- [SQL Files](#sql-files)
 
 
 # Installation:
@@ -106,3 +108,12 @@ After pulling from the repository
 # Error Log
 - Error logs are generated in daily log file inside `storage/log`, so that it can be separated for each day 
 - The file names are like this, `laravel-2023-12-10.log`
+
+
+# Postman Collection
+- Documentation link: https://documenter.getpostman.com/view/1449184/2s9YkhhjXX
+  - You can download/run collection from this link in your postman
+- If you want local collection file, I also provided this file in here, [Medicine Track and Search.postman_collection.json](Medicine%20Track%20and%20Search.postman_collection.json)
+
+# SQL Files
+- I provided my sql db files both main and testing db. You can find it inside the `sql_files` folder
