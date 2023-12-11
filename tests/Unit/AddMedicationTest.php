@@ -126,7 +126,7 @@ class AddMedicationTest extends TestCase
     }
 
     /**
-     * Test 6: already added todo: later will use cache instead of DB
+     * Test 6: already added
      */
     public function test_already_added()
     {

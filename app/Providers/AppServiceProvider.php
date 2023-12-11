@@ -30,5 +30,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->bind(
+            'Illuminate\Contracts\Debug\ExceptionHandler',
+            'App\Exceptions\ThrottleExceptionHandler'
+        );
     }
 }
