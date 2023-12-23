@@ -28,3 +28,4 @@ yarn-error.log
 docker-compose.yml
 vite.config.js
 docker-conf/redis_data/dump.rdb
+docker-conf/mysql/*
