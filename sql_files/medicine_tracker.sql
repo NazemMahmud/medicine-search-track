@@ -42,17 +42,6 @@ INSERT INTO `medicines` (`id`, `rxcui`, `name`, `drug_name`, `base_names`, `dose
 (37, '1053327', 'aspirin 845 MG / caffeine 65 MG Oral Powder [Stanback Headache Powder Reformulated Jan 2011]', 'aspirin', '[\"aspirin\", \"caffeine\"]', '[\"Oral Product\", \"Oral Powder Product\"]', '2023-12-11 03:54:36', '2023-12-11 03:54:36'),
 (38, '1101754', 'acetaminophen 194 MG / aspirin 227 MG / caffeine 33 MG Oral Tablet [Vanquish]', 'aspirin', '[\"aspirin\", \"acetaminophen\", \"caffeine\"]', '[\"Oral Product\", \"Pill\"]', '2023-12-11 03:54:36', '2023-12-11 03:54:36');
 
---
--- Dumping data for table `migrations`
---
-
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(1, '2014_10_12_000000_create_users_table', 1),
-(2, '2014_10_12_100000_create_password_resets_table', 1),
-(3, '2019_08_19_000000_create_failed_jobs_table', 1),
-(4, '2019_12_14_000001_create_personal_access_tokens_table', 1),
-(5, '2023_12_07_145310_create_medicines_table', 2),
-(7, '2023_12_09_124654_create_users_medications_table', 3);
 
 --
 -- Dumping data for table `users`
